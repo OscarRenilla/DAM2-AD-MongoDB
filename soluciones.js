@@ -2,8 +2,8 @@
 // DAM2 - ACCESO A DATOS
 // PRÁCTICA MONGODB - TIENDA ONLINE
 // ============================================================
-// Nombre:
-// Fecha:
+// Nombre: Óscar Renilla 
+// Fecha: 15/03/2023
 //
 // Escribe debajo de cada enunciado la consulta correspondiente.
 // Utiliza la chuleta de MongoDB como referencia.
