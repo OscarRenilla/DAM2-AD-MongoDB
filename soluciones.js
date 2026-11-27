@@ -39,57 +39,73 @@ db.productos.distinct('categoria')
 // productos, sin mostrar su _id.
 db.productos.find({}, { _id: 0, nombre: 1, precio: 1})
 
+
 // BLOQUE 2. CONSULTAS Y FILTROS
 // ============================================================
 
 // 9. Busca todos los productos de informática.
+db.productos.find({ categoria: 'informatica' })
 
 // 10. Encuentra los productos cuyo precio sea superior a 100 €.
+db.productos.find({ precio: { $gt: 100 } })
 
-// 11. Busca los productos que cuestan entre 50 € y 500 €,
-// ambos incluidos.
+// 11. Busca los productos que cuestan entre 50 € y 500 €, ambos incluidos.
+db.productos.find({ precio: { $gte: 50, $lte: 500 } })
 
 // 12. Localiza los productos que no tienen stock.
+db.productos.find({ stock:0 })
 
-// 13. Encuentra los productos con stock superior a 10 unidades
-// y precio inferior a 100 €.
+// 13. Encuentra los productos con stock superior a 10 unidades y precio inferior a 100 €.
+db.productos.find({ stock: { $gt: 10 }, precio: { $lt: 100 }})
 
-// 14. Busca productos pertenecientes a las categorías
-// `audio` o `movil`.
+// 14. Busca productos pertenecientes a las categorías `audio` o `movil`.
+db.productos.find({ categoria: { $in: ['audio', 'movil']}})
 
-// 15. Encuentra los productos que no pertenecen
-// a la categoría `informatica`.
+// 15. Encuentra los productos que no pertenecen a la categoría `informatica`.
+db.productos.find({ categoria: { $ne: 'informactica'}})
 
-// 16. Busca productos que cuesten menos de 30 € o tengan
-// más de 50 unidades en stock.
+// 16. Busca productos que cuesten menos de 30 € o tengan más de 50 unidades en stock.
+db.productos.find({ $or: [{precio: { $lt: 30 } }, {stock: { $gt: 50}}]})
 
 // 17. Encuentra productos cuyo precio no sea superior a 100 €.
+db.productos.find({ precio: {$not: { $gt: 100}}})
 
-// 18. Localiza todos los productos cuyo nombre contenga
-// la palabra `móvil`, sin distinguir mayúsculas de minúsculas.
+// 18. Localiza todos los productos cuyo nombre contenga la palabra `móvil`, sin distinguir mayúsculas de minúsculas.
+db.productos.find({ nombre: { $regex: 'móvil', $options: 'i' } } )
+
 
 // BLOQUE 3. CAMPOS, TIPOS Y ORDENACIÓN
 // ============================================================
 
 // 19. Encuentra los productos que tienen el campo `descuento`.
+db.productos.find({ descuento: { $exists: true }})
 
 // 20. Busca los productos que no tienen descuento definido.
+db.productos.find({ descuento: { $exists: false}})
 
-// 21. Comprueba qué productos tienen el precio almacenado
-// como número.
+// 21. Comprueba qué productos tienen el precio almacenado como número.
+db.productos.find({ precio: {$type: 'number'}})
 
-// 22. Encuentra los productos cuyo precio de venta
-// sea superior a su coste.
+// 22. Encuentra los productos cuyo precio de venta sea superior a su coste.
+db.productos.find({ $expr: {$gt: ['$precio', '$coste']}})
 
 // 23. Ordena los productos del más barato al más caro.
+db.productos.find().sort({ precio: 1} )
 
 // 24. Obtén los tres productos más caros.
+db.productos.find().sort({ precio: -1 }).limit(3)
 
 // 25. Muestra los tres productos más baratos que tengan stock.
+db.productos.find({ stock: { $gt: 0 }}).sort({ precio: 1}).limit(3)
 
-// 26. Implementa una paginación que muestre tres productos
-// por página, ordenados por _id.
-// Obtén las páginas 1, 2 y 3.
+// 26. Implementa una paginación que muestre tres productos por página, ordenados por _id. Obtén las páginas 1, 2 y 3.
+// Página 1
+db.productos.find({ stock: { $gt: 0 }}).sort({ precio: 1}).skip(0).limit(3)
+// Página 2
+db.productos.find({ stock: { $gt: 0 }}).sort({ precio: 1}).skip(3).limit(3)
+// Página 3
+db.productos.find({ stock: { $gt: 0 }}).sort({ precio: 1}).skip(6).limit(3)
+
 
 // BLOQUE 4. INSERCIÓN Y ACTUALIZACIÓN
 // ============================================================
